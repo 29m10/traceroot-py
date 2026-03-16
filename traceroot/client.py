@@ -11,6 +11,7 @@ from traceroot.constants import (
     DEFAULT_FLUSH_AT,
     DEFAULT_FLUSH_INTERVAL,
     DEFAULT_HOST_URL,
+    DEFAULT_TIMEOUT,
 )
 from traceroot.env import (
     TRACEROOT_API_KEY,
@@ -18,6 +19,7 @@ from traceroot.env import (
     TRACEROOT_FLUSH_AT,
     TRACEROOT_FLUSH_INTERVAL,
     TRACEROOT_HOST_URL,
+    TRACEROOT_TIMEOUT,
 )
 from traceroot.git_context import auto_detect_git_context
 from traceroot.instrumentation.registry import Integration
@@ -39,6 +41,7 @@ class TracerootClient:
         host_url: str | None = None,
         flush_interval: float | None = None,
         batch_size: int | None = None,
+        timeout: float | None = None,
         enabled: bool | None = None,
         integrations: list[Integration] | None = None,
         git_repo: str | None = None,
@@ -53,6 +56,8 @@ class TracerootClient:
                 TRACEROOT_FLUSH_INTERVAL env var, then 5.0.
             batch_size: Maximum items per batch before flush. Falls back to
                 TRACEROOT_FLUSH_AT env var, then 100.
+            timeout: HTTP request timeout in seconds. Falls back to
+                TRACEROOT_TIMEOUT env var, then 30.0.
             enabled: Whether tracing is enabled. Falls back to TRACEROOT_ENABLED env var.
             integrations: Libraries to auto-instrument (e.g. ["openai", "langchain"]).
             git_repo: Repository in "owner/repo" format. Falls back to TRACEROOT_GIT_REPO
@@ -73,6 +78,11 @@ class TracerootClient:
             env_batch = os.environ.get(TRACEROOT_FLUSH_AT)
             batch_size = int(env_batch) if env_batch else DEFAULT_FLUSH_AT
         self.batch_size = batch_size
+
+        if timeout is None:
+            env_timeout = os.environ.get(TRACEROOT_TIMEOUT)
+            timeout = float(env_timeout) if env_timeout else DEFAULT_TIMEOUT
+        self.timeout = timeout
 
         if enabled is None:
             env_enabled = os.environ.get(TRACEROOT_ENABLED, "").lower()
@@ -105,6 +115,7 @@ class TracerootClient:
             host_url=self.host_url,
             flush_at=self.batch_size,
             flush_interval=self.flush_interval,
+            timeout=self.timeout,
         )
 
         # Create and configure TracerProvider

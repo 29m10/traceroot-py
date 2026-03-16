@@ -59,7 +59,7 @@ class TestPrimitives:
         assert serialize_value(float("inf")) == "Infinity"
 
     def test_negative_infinity(self):
-        assert serialize_value(float("-inf")) == "Infinity"
+        assert serialize_value(float("-inf")) == "-Infinity"
 
 
 # ---- Collections ----

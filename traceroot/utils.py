@@ -70,7 +70,7 @@ def _serialize_float(value: float) -> Any:
     if math.isnan(value):
         return "NaN"
     if math.isinf(value):
-        return "Infinity"
+        return "-Infinity" if value < 0 else "Infinity"
     return value
 
 

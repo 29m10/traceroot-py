@@ -15,10 +15,11 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from traceroot.constants import (
     DEFAULT_FLUSH_AT,
     DEFAULT_FLUSH_INTERVAL,
+    DEFAULT_TIMEOUT,
     SDK_NAME,
     SDK_VERSION,
 )
-from traceroot.env import TRACEROOT_FLUSH_AT, TRACEROOT_FLUSH_INTERVAL
+from traceroot.env import TRACEROOT_FLUSH_AT, TRACEROOT_FLUSH_INTERVAL, TRACEROOT_TIMEOUT
 
 
 class TracerootSpanProcessor(BatchSpanProcessor):
@@ -44,6 +45,7 @@ class TracerootSpanProcessor(BatchSpanProcessor):
         host_url: str,
         flush_at: int | None = None,
         flush_interval: float | None = None,
+        timeout: float | None = None,
     ):
         """Initialize the span processor.
 
@@ -54,6 +56,8 @@ class TracerootSpanProcessor(BatchSpanProcessor):
                 env var, then DEFAULT_FLUSH_AT.
             flush_interval: Seconds between automatic flushes. Falls back to
                 TRACEROOT_FLUSH_INTERVAL env var, then DEFAULT_FLUSH_INTERVAL.
+            timeout: HTTP request timeout in seconds. Falls back to
+                TRACEROOT_TIMEOUT env var, then DEFAULT_TIMEOUT.
         """
         # Resolve flush_at with env var fallback
         if flush_at is None:
@@ -67,6 +71,11 @@ class TracerootSpanProcessor(BatchSpanProcessor):
                 float(env_flush_interval) if env_flush_interval else DEFAULT_FLUSH_INTERVAL
             )
 
+        # Resolve timeout with env var fallback
+        if timeout is None:
+            env_timeout = os.environ.get(TRACEROOT_TIMEOUT)
+            timeout = float(env_timeout) if env_timeout else DEFAULT_TIMEOUT
+
         # Build endpoint URL
         endpoint = f"{host_url.rstrip('/')}/api/v1/public/traces"
 
@@ -78,6 +87,7 @@ class TracerootSpanProcessor(BatchSpanProcessor):
                 "x-traceroot-sdk-name": SDK_NAME,
                 "x-traceroot-sdk-version": SDK_VERSION,
             },
+            timeout=int(timeout),
             compression=Compression.Gzip,
         )
 
