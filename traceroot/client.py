@@ -7,11 +7,20 @@ import os
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 
-from traceroot.constants import (DEFAULT_FLUSH_AT, DEFAULT_FLUSH_INTERVAL,
-                                 DEFAULT_HOST_URL, DEFAULT_TIMEOUT)
-from traceroot.env import (TRACEROOT_API_KEY, TRACEROOT_ENABLED,
-                           TRACEROOT_FLUSH_AT, TRACEROOT_FLUSH_INTERVAL,
-                           TRACEROOT_HOST_URL, TRACEROOT_TIMEOUT)
+from traceroot.constants import (
+    DEFAULT_FLUSH_AT,
+    DEFAULT_FLUSH_INTERVAL,
+    DEFAULT_HOST_URL,
+    DEFAULT_TIMEOUT,
+)
+from traceroot.env import (
+    TRACEROOT_API_KEY,
+    TRACEROOT_ENABLED,
+    TRACEROOT_FLUSH_AT,
+    TRACEROOT_FLUSH_INTERVAL,
+    TRACEROOT_HOST_URL,
+    TRACEROOT_TIMEOUT,
+)
 from traceroot.git_context import auto_detect_git_context
 from traceroot.instrumentation.registry import Integration
 from traceroot.transport.span_processor import TracerootSpanProcessor
@@ -67,13 +76,13 @@ class TracerootClient:
         """
         # Resolve config with env var fallbacks
         self.api_key = api_key or os.environ.get(TRACEROOT_API_KEY, "")
-        self.host_url = host_url or os.environ.get(TRACEROOT_HOST_URL,
-                                                   DEFAULT_HOST_URL)
+        self.host_url = host_url or os.environ.get(TRACEROOT_HOST_URL, DEFAULT_HOST_URL)
 
         if flush_interval is None:
             env_interval = os.environ.get(TRACEROOT_FLUSH_INTERVAL)
-            flush_interval = (float(env_interval)
-                              if env_interval else DEFAULT_FLUSH_INTERVAL)
+            flush_interval = (
+                float(env_interval) if env_interval else DEFAULT_FLUSH_INTERVAL
+            )
         self.flush_interval = flush_interval
 
         if batch_size is None:
@@ -88,17 +97,20 @@ class TracerootClient:
 
         if enabled is None:
             env_enabled = os.environ.get(TRACEROOT_ENABLED, "").lower()
-            enabled = (env_enabled not in ("false", "0", "no",
-                                           "off") if env_enabled else True)
+            enabled = (
+                env_enabled not in ("false", "0", "no", "off") if env_enabled else True
+            )
 
         self._integrations = integrations
 
         # Resolve git context (explicit > env var > auto-detect)
         git_ctx = auto_detect_git_context()
-        self.git_repo = (git_repo or os.environ.get("TRACEROOT_GIT_REPO")
-                         or git_ctx.get("git_repo"))
-        self.git_ref = (git_ref or os.environ.get("TRACEROOT_GIT_REF")
-                        or git_ctx.get("git_ref"))
+        self.git_repo = (
+            git_repo or os.environ.get("TRACEROOT_GIT_REPO") or git_ctx.get("git_repo")
+        )
+        self.git_ref = (
+            git_ref or os.environ.get("TRACEROOT_GIT_REF") or git_ctx.get("git_ref")
+        )
 
         self._enabled = enabled and bool(self.api_key)
         self._span_processor: TracerootSpanProcessor | None = None
@@ -138,8 +150,7 @@ class TracerootClient:
 
         # Instrumentation (after TracerProvider is set up)
         if self._integrations is not None:
-            from traceroot.instrumentation.registry import \
-                initialize_integrations
+            from traceroot.instrumentation.registry import initialize_integrations
 
             self._instrumented = initialize_integrations(
                 tracer_provider=self._provider,
