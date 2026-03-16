@@ -1,6 +1,0 @@
-token: "traceroot-*"
-service_name: "sdk-python-example-service"
-github_owner: "traceroot-ai"
-github_repo_name: "traceroot-sdk"
-github_commit_hash: "main"
-enable_log_console_export: true

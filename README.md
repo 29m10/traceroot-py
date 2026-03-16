@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://traceroot.ai/">
-    <img src="frontend/ui/public/images/traceroot_logo.png" alt="TraceRoot Logo">
+    <img src="https://raw.githubusercontent.com/traceroot-ai/traceroot/main/frontend/ui/public/images/traceroot_logo.png" alt="TraceRoot Logo">
   </a>
 
 [![Y Combinator][y-combinator-image]][y-combinator-url]
