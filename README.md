@@ -1,10 +1,5 @@
 # TraceRoot Python SDK
 
-<div align="center">
-  <a href="https://traceroot.ai/">
-    <img src="frontend/ui/public/images/traceroot_logo.png" alt="TraceRoot Logo">
-  </a>
-
 [![Y Combinator][y-combinator-image]][y-combinator-url]
 [![License][license-image]][license-url]
 [![X (Twitter)][twitter-image]][twitter-url]
@@ -12,7 +7,7 @@
 [![Documentation][docs-image]][docs-url]
 [![PyPI SDK Downloads][pypi-sdk-downloads-image]][pypi-sdk-downloads-url]
 
-</div>
+# Documentation
 
 Please see the [Python SDK Docs](https://docs.traceroot.ai/sdk/python) for details.
 
