@@ -6,6 +6,7 @@
 [![Discord][discord-image]][discord-url]
 [![Documentation][docs-image]][docs-url]
 [![PyPI SDK Downloads][pypi-sdk-downloads-image]][pypi-sdk-downloads-url]
+[![Python][python-image]][python-url]
 
 # Documentation
 
@@ -21,6 +22,8 @@ Please see the [Python SDK Docs](https://traceroot.ai/docs/tracing/get-started) 
 [license-url]: https://opensource.org/licenses/Apache-2.0
 [pypi-sdk-downloads-image]: https://static.pepy.tech/badge/traceroot
 [pypi-sdk-downloads-url]: https://pypi.python.org/pypi/traceroot
+[python-image]: https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white
+[python-url]: https://github.com/traceroot-ai/traceroot-py/blob/main/pyproject.toml
 [twitter-image]: https://img.shields.io/twitter/follow/TracerootAI
 [twitter-url]: https://x.com/TracerootAI
 [y-combinator-image]: https://img.shields.io/badge/Combinator-S25-orange?logo=ycombinator&labelColor=white
